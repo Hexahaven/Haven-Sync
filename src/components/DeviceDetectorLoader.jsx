@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,77 +7,100 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import Svg, {Circle, Path, Defs, LinearGradient, Stop} from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Stop, G } from 'react-native-svg';
 
-export default function RadarLoader() {
-  const rotation = useSharedValue(0);
+export default function DeviceDetectorLoader() {
+  const rotate = useSharedValue(0);
+  const pulse = useSharedValue(0.7);
 
   useEffect(() => {
-    rotation.value = withRepeat(
-      withTiming(360, {
-        duration: 2000,
-        easing: Easing.linear,
-      }),
+    rotate.value = withRepeat(
+      withTiming(360, { duration: 2500, easing: Easing.linear }),
       -1,
-      false,
+      false
+    );
+
+    pulse.value = withRepeat(
+      withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
     );
   }, []);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{rotate: `${rotation.value}deg`}],
-    };
-  });
+  const rotatingStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotate.value}deg` }],
+  }));
+
+  const pulsingStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pulse.value }],
+  }));
 
   return (
-    <View className="flex items-center justify-center h-40 w-40 relative">
-      <Svg height="150" width="150" viewBox="0 0 100 100">
+    <View className="flex items-center justify-center h-44 w-44 relative">
+      {/* Radar Base */}
+      <Svg width="150" height="150" viewBox="0 0 100 100">
         <Defs>
-          <LinearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0%" stopColor="rgba(100, 149, 237, 0.8)" />
-            <Stop offset="100%" stopColor="rgba(100, 149, 237, 0)" />
+          <LinearGradient id="circleGradient" x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0%" stopColor="#ff8625" stopOpacity="0.4" />
+            <Stop offset="100%" stopColor="#84c3e0" stopOpacity="0.2" />
           </LinearGradient>
         </Defs>
-        <Circle
-          cx="50"
-          cy="50"
-          r="40"
-          stroke="#A0C4FF"
-          strokeWidth="1"
-          fill="transparent"
-        />
-        <Circle
-          cx="50"
-          cy="50"
-          r="30"
-          stroke="#A0C4FF"
-          strokeWidth="2"
-          fill="transparent"
-        />
-        <Circle
-          cx="50"
-          cy="50"
-          r="20"
-          stroke="#A0C4FF"
-          strokeWidth="2"
-          fill="transparent"
-        />
+        {[20, 30, 40].map(r => (
+          <Circle
+            key={r}
+            cx="50"
+            cy="50"
+            r={r}
+            stroke="url(#circleGradient)"
+            strokeWidth="2"
+            fill="transparent"
+          />
+        ))}
       </Svg>
-      <Animated.View style={[animatedStyle, {position: 'absolute'}]}>
-        <Svg height="150" width="150" viewBox="0 0 100 100">
+
+      {/* Rotating Sweep */}
+      <Animated.View
+        style={[
+          rotatingStyle,
+          {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          },
+        ]}>
+        <Svg width="150" height="150" viewBox="0 0 100 100">
           <Defs>
-            <LinearGradient id="sweepGradient" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="rgba(100, 149, 237, 0.8)" />
-              <Stop offset="100%" stopColor="rgba(100, 149, 237, 0)" />
+            <LinearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#84c3e0" stopOpacity="0.7" />
+              <Stop offset="100%" stopColor="#84c3e0" stopOpacity="0" />
             </LinearGradient>
           </Defs>
-          <Path
-            d="M50,50 L90,50 A40,40 0 0,1 50,90 Z"
-            fill="url(#sweepGradient)"
-            opacity="0.8"
-          />
+          <G origin="50,50">
+            <Circle
+              cx="50"
+              cy="50"
+              r="40"
+              fill="url(#sweep)"
+              rotation="45"
+              opacity={0.5}
+            />
+          </G>
         </Svg>
       </Animated.View>
+
+      {/* Pulsing Dot */}
+      <Animated.View
+        style={[
+          pulsingStyle,
+          {
+            position: 'absolute',
+            width: 14,
+            height: 14,
+            backgroundColor: '#ff8625',
+            borderRadius: 7,
+          },
+        ]}
+      />
     </View>
   );
 }
