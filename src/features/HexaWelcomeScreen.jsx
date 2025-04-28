@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   Animated,
@@ -9,14 +8,13 @@ import {
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { clearUser } from '../redux/slices/authSlice';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function WelcomeScreen({ navigation }) {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
 
   // Animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -45,49 +43,92 @@ export default function WelcomeScreen({ navigation }) {
     ]).start();
   }, []);
 
-  const handleLogout = () => {
+  const handleContinue = () => {
     dispatch(clearUser());
     navigation.navigate('HexaLoginScreen');
   };
 
   return (
     <LinearGradient
-      colors={['#6a11cb', '#2575fc']}
-      className="flex-1 justify-center items-center p-6">
+      // Colors sampled from the image you uploaded (approx)
+      colors={['#1a455b', '#0f2c3f']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      
+      {/* App Logo */}
       <Animated.View
         style={{
           opacity: fadeAnim,
           transform: [{ translateY: slideAnim }, { scale: scaleAnim }],
           alignItems: 'center',
-          width: width * 0.9,
+          marginBottom: 40,
         }}>
         <Image
           source={require('../assets/images/hexa-haven-logo.png')}
           style={{
-            marginBottom: 30,
-            width: 120,
-            height: 120,
+            width: 130,
+            height: 130,
             resizeMode: 'contain',
           }}
         />
-        <Text className="text-3xl font-bold mb-2 text-white text-center">
-          Welcome, {user?.fullName || 'Guest'}!
-        </Text>
-        <Text className="text-lg text-white mb-8 text-center">
-          We're glad to have you here. Start exploring and make the most out of
-          our services.
-        </Text>
+      </Animated.View>
 
-        {/* Button with touch feedback */}
+      {/* Live Text Video Placeholder */}
+      <View
+        style={{
+          width: width * 0.85,
+          height: height * 0.35,
+          backgroundColor: '#ffffff22',
+          borderRadius: 16,
+          marginBottom: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {/* Replace this view with actual <Video /> component when you get the file */}
+        <Image
+          source={require('../assets/images/video-placeholder.gif')} // or replace with actual video
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 16,
+            resizeMode: 'cover',
+          }}
+        />
+      </View>
+
+      {/* Continue Button - Bottom Sticky */}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 40,
+          width: width * 0.85,
+        }}>
         <TouchableOpacity
           activeOpacity={0.85}
-          onPress={handleLogout}
-          className="bg-white py-3 px-6 rounded-xl shadow-md w-11/12">
-          <Text className="text-blue-600 text-lg font-semibold text-center">
+          onPress={handleContinue}
+          style={{
+            backgroundColor: '#ffffff',
+            paddingVertical: 14,
+            borderRadius: 12,
+            shadowColor: '#000',
+            shadowOpacity: 0.2,
+            shadowRadius: 6,
+            elevation: 5,
+          }}>
+          <Animated.Text
+            style={{
+              color: '#0f2c3f',
+              fontSize: 18,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              opacity: fadeAnim,
+              transform: [{ translateY: slideAnim }],
+            }}>
             Continue
-          </Text>
+          </Animated.Text>
         </TouchableOpacity>
-      </Animated.View>
+      </View>
     </LinearGradient>
   );
 }
