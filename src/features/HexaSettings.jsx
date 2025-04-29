@@ -9,6 +9,7 @@ import {
   faUserEdit,
   faSignOutAlt,
   faCogs,
+  faShapes,
 } from '@fortawesome/free-solid-svg-icons';
 import { clearUser } from '../redux/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
@@ -54,7 +55,7 @@ export default function HexaSettings() {
         <FontAwesomeIcon icon={faUserEdit} size={18} color="#84c3e0" />
       </TouchableOpacity>
 
-      {/* NEW: Sensor Automation Navigation */}
+      {/* Sensor Automation */}
       <TouchableOpacity
         onPress={() => navigation.navigate('HexaSensorAutomation', { title: 'Sensor Automation' })}
         className="flex-row items-center justify-between bg-gray-100 dark:bg-gray-800 p-4 rounded-xl mb-5">
@@ -62,6 +63,16 @@ export default function HexaSettings() {
           PIR Sensor Automation
         </Text>
         <FontAwesomeIcon icon={faCogs} size={18} color="#84c3e0" />
+      </TouchableOpacity>
+
+      {/* NEW: Smart Scenes */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('HexaScenes', { title: 'Smart Scenes' })}
+        className="flex-row items-center justify-between bg-gray-100 dark:bg-gray-800 p-4 rounded-xl mb-5">
+        <Text className="text-lg font-semibold text-gray-700 dark:text-white">
+          Smart Scenes & Groups
+        </Text>
+        <FontAwesomeIcon icon={faShapes} size={18} color="#84c3e0" />
       </TouchableOpacity>
 
       {/* Logout */}
