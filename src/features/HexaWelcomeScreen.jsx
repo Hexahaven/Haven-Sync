@@ -1,47 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
+  Text,
   TouchableOpacity,
-  Image,
-  Animated,
-  Easing,
   Dimensions,
+  StyleSheet,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import Video from 'react-native-video';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../redux/slices/authSlice';
+import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get('window');
 
-export default function WelcomeScreen({ navigation }) {
+export default function HexaWelcomeScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  // Animations
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
-  const scaleAnim = useRef(new Animated.Value(0.85)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 1000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 6,
-        tension: 90,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
+  const [videoEnded, setVideoEnded] = useState(false);
 
   const handleContinue = () => {
     dispatch(clearUser());
@@ -49,86 +27,73 @@ export default function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <LinearGradient
-      // Colors sampled from the image you uploaded (approx)
-      colors={['#1a455b', '#0f2c3f']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      
-      {/* App Logo */}
-      <Animated.View
-        style={{
-          opacity: fadeAnim,
-          transform: [{ translateY: slideAnim }, { scale: scaleAnim }],
-          alignItems: 'center',
-          marginBottom: 40,
-        }}>
-        <Image
-          source={require('../assets/images/hexa-haven-logo.png')}
-          style={{
-            width: 130,
-            height: 130,
-            resizeMode: 'contain',
-          }}
-        />
-      </Animated.View>
+    <View style={{ flex: 1, position: 'relative' }}>
+      {/* Background Video */}
+      <Video
+        source={require('../assets/videos/hexa-welcome.mp4')}
+        style={StyleSheet.absoluteFill}
+        resizeMode="cover"
+        onEnd={() => setVideoEnded(true)}
+        muted={false}
+        repeat={false}
+        controls={false}
+      />
 
-      {/* Live Text Video Placeholder */}
-      <View
-        style={{
-          width: width * 0.85,
-          height: height * 0.35,
-          backgroundColor: '#ffffff22',
-          borderRadius: 16,
-          marginBottom: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        {/* Replace this view with actual <Video /> component when you get the file */}
-        <Image
-          source={require('../assets/images/video-placeholder.gif')} // or replace with actual video
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: 16,
-            resizeMode: 'cover',
-          }}
-        />
-      </View>
+      {/* Overlay Gradient */}
+      <LinearGradient
+        colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.6)']}
+        style={StyleSheet.absoluteFill}
+      />
 
-      {/* Continue Button - Bottom Sticky */}
+      {/* Logo */}
       <View
         style={{
           position: 'absolute',
-          bottom: 40,
-          width: width * 0.85,
+          top: height * 0.12,
+          alignSelf: 'center',
+          alignItems: 'center',
         }}>
-        <TouchableOpacity
-          activeOpacity={0.85}
-          onPress={handleContinue}
-          style={{
-            backgroundColor: '#ffffff',
-            paddingVertical: 14,
-            borderRadius: 12,
-            shadowColor: '#000',
-            shadowOpacity: 0.2,
-            shadowRadius: 6,
-            elevation: 5,
-          }}>
-          <Animated.Text
-            style={{
-              color: '#0f2c3f',
-              fontSize: 18,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            }}>
-            Continue
-          </Animated.Text>
-        </TouchableOpacity>
+        <Animated.Image
+          source={require('../assets/images/hexa-haven-logo.png')}
+          style={{ width: 120, height: 120 }}
+          entering={FadeInUp.delay(500)}
+        />
       </View>
-    </LinearGradient>
+
+      {/* Continue Button */}
+      {videoEnded && (
+        <Animated.View
+          entering={FadeInUp}
+          style={{
+            position: 'absolute',
+            bottom: 60,
+            width: '90%',
+            alignSelf: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={handleContinue}
+            activeOpacity={0.85}
+            style={{
+              backgroundColor: 'white',
+              paddingVertical: 14,
+              borderRadius: 14,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 3 },
+              shadowOpacity: 0.2,
+              shadowRadius: 6,
+            }}>
+            <Text
+              style={{
+                color: '#2575fc',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+    </View>
   );
 }
