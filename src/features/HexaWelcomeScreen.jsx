@@ -87,7 +87,7 @@ export default function WelcomeScreen({ navigation }) {
         }}>
         {/* Replace this view with actual <Video /> component when you get the file */}
         <Image
-          source={require('../assets/images/video-placeholder.gif')} // or replace with actual video
+          source={require('../assets/images/dummy-login.png')} // or replace with actual video
           style={{
             width: '100%',
             height: '100%',
