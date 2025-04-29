@@ -139,7 +139,18 @@ export default function Routes() {
         name="HexaSensorAutomation"
         component={Components.HexaSensorAutomation}
         options={{
-          header: () => <CustomHeader title="Sensor Automation" showBackButton={true} />,
+          header: () => (
+            <CustomHeader title="Sensor Automation" showBackButton={true} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="HexaScenes"
+        component={Components.HexaScenes}
+        options={{
+          header: () => (
+            <CustomHeader title="Smart Scenes" showBackButton={true} />
+          ),
         }}
       />
     </Stack.Navigator>
