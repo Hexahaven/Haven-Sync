@@ -153,6 +153,15 @@ export default function Routes() {
           ),
         }}
       />
+      <Stack.Screen
+        name="HexaVoiceAssist"
+        component={Components.HexaVoiceAssist}
+        options={{
+          header: () => (
+            <CustomHeader title="Voice Assistants" showBackButton={true} />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
