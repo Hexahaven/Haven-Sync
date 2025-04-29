@@ -10,6 +10,7 @@ const initialState = {
     switches: [],
     timer: 60,
   },
+  scenes: [],
 };
 
 const switchSlice = createSlice({
@@ -64,16 +65,40 @@ const switchSlice = createSlice({
     setMainToggleTimer: (state, action) => {
       state.mainToggleTimer = action.payload;
     },
-    decrementMainToggleTimer: (state) => {
+    decrementMainToggleTimer: state => {
       if (state.mainToggleTimer > 0) {
         state.mainToggleTimer--;
       }
     },
-    resetMainToggleTimer: (state) => {
+    resetMainToggleTimer: state => {
       state.mainToggleTimer = 0;
     },
     saveSensorConfig: (state, action) => {
       state.sensorConfig = action.payload;
+    },
+
+    // ✅ Scenes & Groups
+    saveScene: (state, action) => {
+      const { name, switches } = action.payload;
+      const existing = state.scenes.find(scene => scene.name === name);
+      if (existing) {
+        existing.switches = switches;
+      } else {
+        state.scenes.push({ name, switches });
+      }
+    },
+    deleteScene: (state, action) => {
+      const name = action.payload;
+      state.scenes = state.scenes.filter(scene => scene.name !== name);
+    },
+    runScene: (state, action) => {
+      const scene = action.payload;
+      scene.switches.forEach(s => {
+        const device = state.activeDevices.find(d => d.id === s.deviceId);
+        if (device) {
+          device.switches[s.switchIndex] = s.state;
+        }
+      });
     },
   },
 });
@@ -89,7 +114,10 @@ export const {
   setMainToggleTimer,
   decrementMainToggleTimer,
   resetMainToggleTimer,
-  saveSensorConfig, 
+  saveSensorConfig,
+  saveScene,
+  deleteScene,
+  runScene,
 } = switchSlice.actions;
 
 export default switchSlice.reducer;
