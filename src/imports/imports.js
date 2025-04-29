@@ -7,3 +7,4 @@ export { default as HexaSignUpScreen } from '../features/HexaSignUpScreen';
 export { default as HexaSettings } from '../features/HexaSettings';
 export { default as HexaSensorAutomation } from '../features/HexaSensorAutomation';
 export { default as HexaScenes } from '../features/HexaScenes';
+export { default as HexaVoiceAssist } from '../features/HexaVoiceAssist';
