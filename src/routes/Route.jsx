@@ -135,6 +135,13 @@ export default function Routes() {
           ),
         })}
       />
+      <Stack.Screen
+        name="HexaSensorAutomation"
+        component={Components.HexaSensorAutomation}
+        options={{
+          header: () => <CustomHeader title="Sensor Automation" showBackButton={true} />,
+        }}
+      />
     </Stack.Navigator>
   );
 }
