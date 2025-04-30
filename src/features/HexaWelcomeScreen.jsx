@@ -36,7 +36,7 @@ export default function HexaWelcomeScreen() {
     <View style={{ flex: 1 }}>
       {/* Background Video */}
       <Video
-        source={require('../assets/videos/hexa-final-welcome.mp4')}
+        source={require('../assets/videos/hexa-final-welcome.mp4')} // Video asset path
         style={StyleSheet.absoluteFill}
         resizeMode="cover"
         muted={false}
@@ -50,7 +50,7 @@ export default function HexaWelcomeScreen() {
         colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
         style={StyleSheet.absoluteFill}
       />
-      
+
       {/* Continue Button (after 5s) */}
       {showButton && (
         <Animated.View
