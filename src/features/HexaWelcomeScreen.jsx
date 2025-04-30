@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -13,35 +13,41 @@ import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export default function HexaWelcomeScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const [videoEnded, setVideoEnded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const timeoutRef = useRef(null);
 
   const handleContinue = () => {
     dispatch(clearUser());
     navigation.navigate('HexaLoginScreen');
   };
 
+  const handleVideoProgress = ({ currentTime }) => {
+    if (currentTime >= 5 && !showButton) {
+      setShowButton(true);
+    }
+  };
+
   return (
-    <View style={{ flex: 1, position: 'relative' }}>
+    <View style={{ flex: 1 }}>
       {/* Background Video */}
       <Video
-        source={require('../assets/videos/hexa-welcome.mp4')}
+        source={require('../assets/videos/hexa-final-welcome.mp4')}
         style={StyleSheet.absoluteFill}
         resizeMode="cover"
-        onEnd={() => setVideoEnded(true)}
         muted={false}
         repeat={false}
         controls={false}
+        onProgress={handleVideoProgress}
       />
 
       {/* Overlay Gradient */}
       <LinearGradient
-        colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.6)']}
+        colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
         style={StyleSheet.absoluteFill}
       />
 
@@ -60,8 +66,8 @@ export default function HexaWelcomeScreen() {
         />
       </View>
 
-      {/* Continue Button */}
-      {videoEnded && (
+      {/* Continue Button (after 5s) */}
+      {showButton && (
         <Animated.View
           entering={FadeInUp}
           style={{
