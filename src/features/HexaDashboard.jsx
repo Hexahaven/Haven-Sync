@@ -1,4 +1,5 @@
-import { ScrollView, View, Text } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { ScrollView, View, Text, RefreshControl } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import GreetingSection from '../components/GreetingSection';
 import WeatherSection from '../components/WeatherSection';
@@ -6,6 +7,17 @@ import SwitchSection from '../components/SwitchSection';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function HexaDashboard() {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate fetching data or any async operation
+    setTimeout(() => {
+      setRefreshing(false);
+      // Add any data reload logic here if needed
+    }, 2000);
+  }, []);
+
   return (
     <SafeAreaProvider>
       <LinearGradient
@@ -15,7 +27,12 @@ export default function HexaDashboard() {
         style={{ flex: 1 }}
       >
         <SafeAreaView className="flex-1">
-          <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 40 }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             {/* Header / Greeting */}
             <View className="p-6 pb-2">
               <GreetingSection />
