@@ -50,27 +50,7 @@ export default function HexaWelcomeScreen() {
         colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
         style={StyleSheet.absoluteFill}
       />
-
-      {/* Logo */}
-      <View
-        style={{
-          position: 'absolute',
-          top: height * 0.12,
-          alignSelf: 'center',
-          alignItems: 'center',
-        }}>
-        {/* Replace this view with actual <Video /> component when you get the file */}
-        <Image
-          source={require('../assets/images/video-placeholder.gif')} // or replace with actual video
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: 16,
-            resizeMode: 'cover',
-          }}
-        />
-      </View>
-
+      
       {/* Continue Button (after 5s) */}
       {showButton && (
         <Animated.View
