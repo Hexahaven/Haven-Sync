@@ -36,7 +36,7 @@ export default function HexaWelcomeScreen() {
     <View style={{ flex: 1 }}>
       {/* Background Video */}
       <Video
-        source={require('../assets/videos/hexa-final-welcome.mp4')} // Video asset path
+        source={require('../assets/videos/hexa-final-welcome.mp4')}
         style={StyleSheet.absoluteFill}
         resizeMode="cover"
         muted={false}
