@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
@@ -16,7 +16,7 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     updateProfile: (state, action) => {
-      return {...state, ...action.payload};
+      return { ...state, ...action.payload };
     },
     toggleDarkMode: state => {
       state.darkMode = !state.darkMode;
@@ -24,5 +24,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const {updateProfile, toggleDarkMode} = profileSlice.actions;
+export const { updateProfile, toggleDarkMode } = profileSlice.actions;
 export default profileSlice.reducer;

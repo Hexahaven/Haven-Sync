@@ -1,11 +1,13 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
 import { useSelector } from 'react-redux';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 export function GreetingSection() {
   const navigation = useNavigation();
-  const user = useSelector(state => state.auth.user); // fetch from Redux
+  const profile = useSelector(state => state.profile);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -19,29 +21,38 @@ export function GreetingSection() {
     navigation.navigate('HexaEditProfile', { title: 'Edit Profile' });
   };
 
+  const handleOpenSettings = () => {
+    navigation.navigate('HexaSettings', { title: 'Settings' });
+  };
+
   return (
     <>
-      {/* Header Row */}
       <View className="m-3 flex-row justify-between items-center">
         <Image
           source={require('../assets/images/hexa-haven-logo.png')}
-          className="w-1/3 h-12 resize-contain"
+          className="w-1/3 h-full"
         />
-        <TouchableOpacity onPress={handleEditProfile}>
-          <Image
-            source={require('../assets/images/dummy-login.png')}
-            className="w-12 h-12 rounded-full border-2 border-gray-300 dark:border-gray-600"
-          />
-        </TouchableOpacity>
+
+        <View className="flex-row space-x-3 items-center">
+          <TouchableOpacity onPress={handleOpenSettings}>
+            <FontAwesomeIcon icon={faCog} size={22} color="#555" />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleEditProfile}>
+            <Image
+              source={{ uri: profile.avatar }}
+              className="w-12 h-12 rounded-full border-2 border-gray-300"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* Greeting Text */}
       <View className="m-4 mt-0 mb-8">
-        <Text className="text-3xl font-extrabold text-gray-800 dark:text-white font-mono">
+        <Text className="text-3xl font-extrabold text-gray-800 font-mono">
           {getGreeting()},
         </Text>
-        <Text className="text-2xl text-[#ff8625] font-semibold">
-          {user?.fullName || 'Guest'}
+        <Text className="text-2xl text-[#ff8625]">
+          {profile.name || 'Guest'}
         </Text>
       </View>
     </>
