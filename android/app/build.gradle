@@ -11,18 +11,13 @@ react {
     autolinkLibrariesWithApp()
 }
 
-
 def enableProguardInReleaseBuilds = false
 
 // Use this if you're not using Hermes
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
-    ndkVersion rootProject.ext.ndkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
-
-    namespace "com.hexahavensmarthomeapp"
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.hexahavensmarthomeapp"
@@ -64,4 +59,13 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+}
+
+// Ext block to define the SDK and build tools versions
+ext {
+    compileSdkVersion = 33    // Set to your desired compile SDK version
+    minSdkVersion = 21       // Set to your desired minimum SDK version
+    targetSdkVersion = 33    // Set to your desired target SDK version
+    ndkVersion = "21.4.7075529" // Example NDK version
+    buildToolsVersion = "30.0.3"  // Example build tools version
 }
