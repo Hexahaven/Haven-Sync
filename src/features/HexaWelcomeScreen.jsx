@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Image,
   Dimensions,
   StyleSheet,
 } from 'react-native';
@@ -32,61 +31,46 @@ export default function HexaWelcomeScreen() {
         source={require('../assets/images/hexahavenimg2.png')}
         style={StyleSheet.absoluteFill}
         resizeMode="cover"
-      />
-
-      {/* Overlay Gradient */}
-      <LinearGradient
-        colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
-        style={StyleSheet.absoluteFill}
-      />
-
-      {/* Logo */}
-      <View
-        style={{
-          position: 'absolute',
-          top: height * 0.12,
-          alignSelf: 'center',
-          alignItems: 'center',
-        }}>
-        <Animated.Image
-          source={require('../assets/images/hexa-haven-logo.png')}
-          style={{width: 120, height: 120}}
-          entering={FadeInUp.delay(500)}
+      >
+        {/* Overlay Gradient */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
+          style={StyleSheet.absoluteFill}
         />
-      </View>
 
-      {/* Continue Button */}
-      <Animated.View
-        entering={FadeInUp.delay(1000)}
-        style={{
-          position: 'absolute',
-          bottom: 60,
-          width: '90%',
-          alignSelf: 'center',
-        }}>
-        <TouchableOpacity
-          onPress={handleContinue}
-          activeOpacity={0.85}
+        {/* Continue Button */}
+        <Animated.View
+          entering={FadeInUp.delay(1000)}
           style={{
-            backgroundColor: 'white',
-            paddingVertical: 14,
-            borderRadius: 14,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 3},
-            shadowOpacity: 0.2,
-            shadowRadius: 6,
+            position: 'absolute',
+            bottom: 60,
+            width: '90%',
+            alignSelf: 'center',
           }}>
-          <Text
+          <TouchableOpacity
+            onPress={handleContinue}
+            activeOpacity={0.85}
             style={{
-              color: '#2575fc',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: 18,
+              backgroundColor: 'white',
+              paddingVertical: 14,
+              borderRadius: 14,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 3},
+              shadowOpacity: 0.2,
+              shadowRadius: 6,
             }}>
-            Continue
-          </Text>
-        </TouchableOpacity>
-      </Animated.View>
+            <Text
+              style={{
+                color: '#2575fc',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </ImageBackground>
     </View>
   );
 }
