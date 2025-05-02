@@ -1,24 +1,22 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()  // For Gradle plugin resolution
-        google()              // Google's Maven repository
-        mavenCentral()        // Maven Central for other dependencies
+        gradlePluginPortal()
+        google()
+        mavenCentral()
     }
-    includeBuild('../node_modules/@react-native/gradle-plugin')  // Ensure the React Native Gradle plugin is included
+    includeBuild("../node_modules/react-native-gradle-plugin")
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT) // Ensures all dependencies come from repositories, not local project repos
-     repositories {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
     }
+    
 }
 
-rootProject.name = 'HexaHavenSmartHomeApp' // Name of the project
-
-// Include the main app module
+rootProject.name = 'HexaHavenSmartHomeApp'
 include ':app'
 
 // Manually include @react-native-community/slider if necessary (auto-linking should generally handle this)
