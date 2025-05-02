@@ -8,10 +8,11 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)  // Ensures all dependencies come from repositories, not local project repos
-    repositories {
-        google()       // Google's Maven repository
-        mavenCentral() // Maven Central for all other dependencies
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT) // Ensures all dependencies come from repositories, not local project repos
+     repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
     }
 }
 
