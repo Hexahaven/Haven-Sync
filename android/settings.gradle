@@ -4,7 +4,7 @@ pluginManagement {
         google()
         mavenCentral()
     }
-    includeBuild("../node_modules/react-native-gradle-plugin")
+    includeBuild('../node_modules/react-native-gradle-plugin') // Ensure the right path to the plugin
 }
 
 dependencyResolutionManagement {
@@ -13,7 +13,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-    
 }
 
 rootProject.name = 'HexaHavenSmartHomeApp'
