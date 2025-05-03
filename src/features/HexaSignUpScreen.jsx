@@ -1,11 +1,22 @@
-import React from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch} from 'react-redux';
-import {setUser} from '../redux/slices/authSlice';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faUser, faEnvelope, faLock} from '@fortawesome/free-solid-svg-icons';
-import {Formik} from 'formik';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/slices/authSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {
+  faUser,
+  faEnvelope,
+  faLock,
+  faEye,
+  faEyeSlash,
+} from '@fortawesome/free-solid-svg-icons';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 const SignUpSchema = Yup.object().shape({
@@ -16,20 +27,23 @@ const SignUpSchema = Yup.object().shape({
     .required('Required'),
 });
 
-export default function SignUpScreen({navigation}) {
+export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignUp = values => {
-    dispatch(setUser({fullName: values.fullName, email: values.email}));
+    dispatch(setUser({ fullName: values.fullName, email: values.email }));
     navigation.navigate('HexaDashboard');
   };
 
   return (
     <LinearGradient
-      colors={['#6a11cb', '#2575fc']}
+      colors={['#1a455b', '#0f2c3f']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
       className="flex-1 justify-center p-6">
       <Formik
-        initialValues={{fullName: '', email: '', password: ''}}
+        initialValues={{ fullName: '', email: '', password: '' }}
         validationSchema={SignUpSchema}
         onSubmit={handleSignUp}>
         {({
@@ -44,6 +58,8 @@ export default function SignUpScreen({navigation}) {
             <Text className="text-3xl font-bold mb-8 text-center text-white">
               Sign Up
             </Text>
+
+            {/* Full Name */}
             <View className="mb-6">
               <View className="flex-row items-center border-b border-white pb-2">
                 <FontAwesomeIcon
@@ -57,7 +73,7 @@ export default function SignUpScreen({navigation}) {
                   onBlur={handleBlur('fullName')}
                   value={values.fullName}
                   className="flex-1 text-lg text-white"
-                  placeholderTextColor="#DDD"
+                  placeholderTextColor="#CCCCCC"
                 />
               </View>
               {touched.fullName && errors.fullName && (
@@ -66,6 +82,8 @@ export default function SignUpScreen({navigation}) {
                 </Text>
               )}
             </View>
+
+            {/* Email */}
             <View className="mb-6">
               <View className="flex-row items-center border-b border-white pb-2">
                 <FontAwesomeIcon
@@ -79,7 +97,9 @@ export default function SignUpScreen({navigation}) {
                   onBlur={handleBlur('email')}
                   value={values.email}
                   className="flex-1 text-lg text-white"
-                  placeholderTextColor="#DDD"
+                  placeholderTextColor="#CCCCCC"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
                 />
               </View>
               {touched.email && errors.email && (
@@ -88,6 +108,8 @@ export default function SignUpScreen({navigation}) {
                 </Text>
               )}
             </View>
+
+            {/* Password */}
             <View className="mb-8">
               <View className="flex-row items-center border-b border-white pb-2">
                 <FontAwesomeIcon
@@ -100,10 +122,17 @@ export default function SignUpScreen({navigation}) {
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   className="flex-1 text-lg text-white"
-                  placeholderTextColor="#DDD"
+                  placeholderTextColor="#CCCCCC"
                 />
+                <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    size={18}
+                    color="#ffffff"
+                  />
+                </TouchableOpacity>
               </View>
               {touched.password && errors.password && (
                 <Text className="text-red-500 text-sm mt-1">
@@ -111,17 +140,21 @@ export default function SignUpScreen({navigation}) {
                 </Text>
               )}
             </View>
+
+            {/* Sign Up Button */}
             <TouchableOpacity
               onPress={handleSubmit}
               className="bg-white py-3 rounded-lg shadow-md">
-              <Text className="text-blue-600 text-center text-lg font-semibold">
+              <Text className="text-blue-800 text-center text-lg font-semibold">
                 Sign Up
               </Text>
             </TouchableOpacity>
+
+            {/* Navigate to Login */}
             <Text className="mt-6 text-center text-white">
-              Already have an account?
+              Already have an account?{' '}
               <Text
-                className="text-white font-semibold"
+                className="text-white font-semibold underline"
                 onPress={() => navigation.navigate('HexaLoginScreen')}>
                 Log In
               </Text>

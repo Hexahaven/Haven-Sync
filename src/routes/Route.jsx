@@ -1,13 +1,13 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {TouchableOpacity, Text, StatusBar} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { TouchableOpacity, Text, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Components from '../imports/imports';
-import Animated, {SlideInUp} from 'react-native-reanimated';
-import {useSelector} from 'react-redux';
+import Animated, { SlideInUp } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +26,7 @@ const CustomBackButton = React.memo(() => {
   );
 });
 
-const CustomHeader = ({title, showBackButton}) => {
+const CustomHeader = ({ title, showBackButton }) => {
   const mainToggleTimer = useSelector(state => state.switches.mainToggleTimer);
 
   const formatTime = seconds => {
@@ -43,7 +43,7 @@ const CustomHeader = ({title, showBackButton}) => {
       <StatusBar backgroundColor="#84c3e0" barStyle="light-content" />
       <LinearGradient
         colors={['#84c3e0', '#bedcea']}
-        style={{borderBottomLeftRadius: 50, borderBottomRightRadius: 50}}
+        style={{ borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}
         className="h-[70px] flex-row items-start px-5 pb-10 pt-4">
         {showBackButton && <CustomBackButton />}
         <Animated.View entering={SlideInUp.delay(150)} className="flex-1">
@@ -81,35 +81,27 @@ export default function Routes() {
       <Stack.Screen
         name="HexaWelcomeScreen"
         component={Components.HexaWelcomeScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="HexaLoginScreen"
         component={Components.HexaLoginScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="HexaSignUpScreen"
         component={Components.HexaSignUpScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="HexaDashboard"
         component={Components.HexaDashboard}
-        options={{
-          headerShown: false,
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="HexaDevices"
         component={Components.HexaDevices}
-        options={({route}) => ({
+        options={({ route }) => ({
           header: () => (
             <CustomHeader
               title={route.params?.title || route.name}
@@ -117,12 +109,12 @@ export default function Routes() {
             />
           ),
         })}
-        initialParams={{deviceId: null}}
+        initialParams={{ deviceId: null }}
       />
       <Stack.Screen
         name="HexaEditProfile"
         component={Components.HexaEditProfile}
-        options={({route}) => ({
+        options={({ route }) => ({
           header: () => (
             <CustomHeader
               title={route.params?.title || route.name}
@@ -130,6 +122,45 @@ export default function Routes() {
             />
           ),
         })}
+      />
+      <Stack.Screen
+        name="HexaSettings"
+        component={Components.HexaSettings}
+        options={({ route }) => ({
+          header: () => (
+            <CustomHeader
+              title={route.params?.title || 'Settings'}
+              showBackButton={true}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="HexaSensorAutomation"
+        component={Components.HexaSensorAutomation}
+        options={{
+          header: () => (
+            <CustomHeader title="Sensor Automation" showBackButton={true} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="HexaScenes"
+        component={Components.HexaScenes}
+        options={{
+          header: () => (
+            <CustomHeader title="Smart Scenes" showBackButton={true} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="HexaVoiceAssist"
+        component={Components.HexaVoiceAssist}
+        options={{
+          header: () => (
+            <CustomHeader title="Voice Assistants" showBackButton={true} />
+          ),
+        }}
       />
     </Stack.Navigator>
   );

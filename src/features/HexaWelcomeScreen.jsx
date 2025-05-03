@@ -1,66 +1,76 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
-  Animated,
-  Easing,
+  ImageBackground,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {clearUser} from '../redux/slices/authSlice';
+import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import Animated, {FadeInUp} from 'react-native-reanimated';
 
-export default function WelcomeScreen({navigation}) {
+const {height} = Dimensions.get('window');
+
+export default function HexaWelcomeScreen() {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
-  const fadeAnim = new Animated.Value(0);
-  const slideAnim = new Animated.Value(100);
+  const navigation = useNavigation();
 
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 1000,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [fadeAnim, slideAnim]);
-
-  const handleLogout = () => {
+  const handleContinue = () => {
     dispatch(clearUser());
     navigation.navigate('HexaLoginScreen');
   };
 
   return (
-    <LinearGradient
-      colors={['#6a11cb', '#2575fc']}
-      className="flex-1 justify-center items-center p-6">
-      <Animated.View
-        style={{opacity: fadeAnim, transform: [{translateY: slideAnim}]}}>
-        <Image
-          source={require('../assets/images/hexa-haven-logo.png')}
-          className="mb-8"
+    <View style={{flex: 1}}>
+      {/* Background Image */}
+      <ImageBackground
+        source={require('../assets/images/hexahavenimg2.png')}
+        style={StyleSheet.absoluteFill}
+        resizeMode="cover"
+      >
+        {/* Overlay Gradient */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.6)']}
+          style={StyleSheet.absoluteFill}
         />
-        <Text className="text-3xl font-bold mb-2 text-white">
-          Welcome, {user?.fullName}!
-        </Text>
-        <Text className="text-lg text-white mb-8 text-center">
-          We're glad to have you here. Start exploring and make the most out of
-          our services.
-        </Text>
-        <TouchableOpacity
-          onPress={handleLogout}
-          className="bg-white py-3 px-6 rounded-lg shadow-md">
-          <Text className="text-blue-600 text-lg font-semibold">Log In</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </LinearGradient>
+
+        {/* Continue Button */}
+        <Animated.View
+          entering={FadeInUp.delay(1000)}
+          style={{
+            position: 'absolute',
+            bottom: 60,
+            width: '90%',
+            alignSelf: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={handleContinue}
+            activeOpacity={0.85}
+            style={{
+              backgroundColor: 'white',
+              paddingVertical: 14,
+              borderRadius: 14,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 3},
+              shadowOpacity: 0.2,
+              shadowRadius: 6,
+            }}>
+            <Text
+              style={{
+                color: '#2575fc',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </ImageBackground>
+    </View>
   );
 }
