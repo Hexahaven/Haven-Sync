@@ -16,7 +16,8 @@
     "nativewind": "^4.1.23",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-native": "^0.79.2"
+    "react-native": "^0.79.2",
+    "react-native-gradle-plugin": "^0.71.19"
   },
   "devDependencies": {
     "@react-native-community/cli": "^18.0.0"
