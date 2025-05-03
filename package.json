@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@react-native/metro-config": "^0.79.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "^0.79.2"
