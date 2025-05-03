@@ -1,6 +1,9 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react" // Ensure this is here
+apply plugin: "com.facebook.react"
+
+// Enable Hermes support based on gradle.properties
+def hermesEnabled = project.hasProperty("hermesEnabled") ? project.getProperty("hermesEnabled").toBoolean() : false
 
 react {
     // Ensure auto-linking is correctly applied
@@ -13,7 +16,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.hexahavensmarthomeapp"
 
@@ -50,8 +53,8 @@ dependencies {
     // React Native core
     implementation("com.facebook.react:react-android")
 
-    // JS engine
-    if (hermesEnabled.toBoolean()) {
+    // JS engine: Hermes or JSC
+    if (hermesEnabled) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
