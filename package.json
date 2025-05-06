@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "react-native start",
+    "android": "react-native run-android",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@react-native-community/cli-platform-android": "^18.0.0",
     "@react-native/metro-config": "^0.79.2",
-    "all": "^0.0.0",
     "nativewind": "^4.1.23",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
